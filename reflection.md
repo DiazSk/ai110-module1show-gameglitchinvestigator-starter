@@ -4,40 +4,28 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 
 ## 1. What was broken when you started?
 
-- What did the game look like the first time you ran it?
-- List at least two concrete bugs you noticed at the start  
-  (for example: "the secret number kept changing" or "the hints were backwards").
+When I started, game logic lived inside `app.py` while `logic_utils.py` was mostly stubbed with `NotImplementedError`, which made the code harder to test and maintain. I also noticed that attempts were being counted before input validation, so invalid entries could consume turns. Decimal input like `42.5` was quietly converted to an integer, which gave confusing behavior instead of a clear validation error. The score rules for high/low guesses were inconsistent and could reward wrong guesses on specific turns.
 
 ---
 
 ## 2. How did you use AI as a teammate?
 
-- Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
-- Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
-- Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
+I used Claude Code to reason through each bug and to propose refactoring steps from UI code to utility functions. A correct suggestion was to move `parse_guess`, `get_range_for_difficulty`, and `update_score` into `logic_utils.py` and import them in `app.py`, which made testing much easier. A misleading suggestion I rejected was to keep coercing decimal strings into integers for convenience; that hides bad input and creates confusing outcomes for players. I verified each accepted suggestion by running `pytest` and checking that behavior matched expected game rules.
 
 ---
 
 ## 3. Debugging and testing your fixes
 
-- How did you decide whether a bug was really fixed?
-- Describe at least one test you ran (manual or using pytest)  
-  and what it showed you about your code.
-- Did AI help you design or understand any tests? How?
+I validated fixes in two ways: automated tests and logic review in `app.py`. I added new pytest cases to confirm decimal inputs are rejected, integer inputs parse correctly, and score updates are consistent for wins and non-win hints. I also changed the submit flow so attempts increment only after a valid, in-range guess. After these changes, all tests pass with `pytest -q`, which confirms the repaired logic works as expected.
 
 ---
 
 ## 4. What did you learn about Streamlit and state?
 
-- In your own words, explain why the secret number kept changing in the original app.
-- How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
-- What change did you make that finally gave the game a stable secret number?
+I learned that Streamlit reruns the script on each interaction, so state must be carefully managed in `st.session_state`. The order of operations matters: when counters update before validation, the UI can show unfair attempt loss. I also learned to keep game rules in pure functions and keep the UI layer focused on interaction and display. That separation makes state bugs easier to isolate.
 
 ---
 
 ## 5. Looking ahead: your developer habits
 
-- What is one habit or strategy from this project that you want to reuse in future labs or projects?
-  - This could be a testing habit, a prompting strategy, or a way you used Git.
-- What is one thing you would do differently next time you work with AI on a coding task?
-- In one or two sentences, describe how this project changed the way you think about AI generated code.
+I want to keep the habit of writing or updating tests immediately after each fix so regressions are caught quickly. I also learned to treat AI suggestions as drafts that need verification, not as final truth. For future projects, I will ask AI to explain tradeoffs and edge cases before applying large edits. That helps me stay responsible for the final code quality.

@@ -25,14 +25,23 @@ It wrote the code, ran away, and now the game is unplayable.
 
 ## 📝 Document Your Experience
 
-- [ ] Describe the game's purpose.
-- [ ] Detail which bugs you found.
-- [ ] Explain what fixes you applied.
+- [x] Describe the game's purpose.
+- [x] Detail which bugs you found.
+- [x] Explain what fixes you applied.
+
+This game is a number guessing challenge built with Streamlit where players try to find a secret number within a limited number of attempts. I investigated and repaired logic glitches around input handling, attempt tracking, and score updates. I also refactored shared game logic into `logic_utils.py` so the UI code in `app.py` stays cleaner and easier to test.
 
 ## 📸 Demo
 
-- [ ] [Insert a screenshot of your fixed, winning game here]
+- [ ] Insert a screenshot of the fixed winning game here.
+![Winning-game](./winning-game.png)
+
+How to capture demo evidence:
+- Run `python -m streamlit run app.py`
+- Play until a win state is shown
+- Take a screenshot of the success message and score
 
 ## 🚀 Stretch Features
 
 - [ ] [If you choose to complete Challenge 4, insert a screenshot of your Enhanced Game UI here]
+![Edge-Case Testing](./edge-case-testing.png)
